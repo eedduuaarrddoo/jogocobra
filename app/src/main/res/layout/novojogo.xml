@@ -16,6 +16,7 @@
             android:id="@+id/pontuacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,16 +29,13 @@
             android:id="@+id/gridL"
             android:layout_width="407dp"
             android:layout_height="505dp"
-
             android:background="#FFFFFF"
-            app:columnCount="50"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.659"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.152"
-            app:rowCount="50">
+            app:layout_constraintVertical_bias="0.152">
 
 
         </androidx.gridlayout.widget.GridLayout>
@@ -46,8 +44,10 @@
             android:id="@+id/testador"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Button"
-            tools:layout_editor_absoluteX="177dp"
-            tools:layout_editor_absoluteY="549dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gridL" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
