@@ -17,22 +17,19 @@ class NovoJogo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= DataBindingUtil.setContentView(this,R.layout.novojogo)
         viewmodel = ViewModelProvider(this).get(NovoJogoViewModel::class.java)
-
+        binding.viewmodel=viewmodel
         binding.lifecycleOwner = this
 
-        for (i in 0..2499){
+
             val inflater = LayoutInflater.from(this)
-            val tv = inflater.inflate(R.layout.fundocampo,binding.gridL, false) as ImageView
-        binding.gridL.addView(tv)
 
+            for (i in 0 until viewmodel.linha.value!!) {
+                for (j in 0 until viewmodel.coluna.value!!) {
+                    val tv = inflater.inflate(R.layout.fundocampo, binding.gridl, false) as ImageView
+                    viewmodel._tabuleiro.value!![i][j] = tv
+                    binding.gridl.addView(viewmodel._tabuleiro.value!![i][j])
+
+                }
+            }
     }
-        binding.gridL.columnCount= viewmodel.coluna.value!!
-        binding.gridL.rowCount= viewmodel.linha.value!!
-       // binding.testador.setOnClickListener {
-           // binding.apply {
-
-
-            //}
-       // }
-  }
-    }
+            }
