@@ -11,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background=""
-        tools:context=".novojogo">
+      >
 
         <androidx.gridlayout.widget.GridLayout
             android:id="@+id/gridl"
@@ -29,6 +28,46 @@
 
 
         </androidx.gridlayout.widget.GridLayout>
+
+        <Button
+            android:id="@+id/cima"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:text="Button"
+            app:layout_constraintBottom_toTopOf="@+id/baixo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/baixo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/esquerda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:text="Button"
+            app:layout_constraintEnd_toStartOf="@+id/direita"
+            app:layout_constraintHorizontal_bias="0.163"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cima" />
+
+        <Button
+            android:id="@+id/direita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cima" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
