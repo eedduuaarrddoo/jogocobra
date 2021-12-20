@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jogocobra">
         <activity
+            android:name=".FimDjogo"
+            android:exported="false" />
+        <activity
             android:name=".TelaInicio"
             android:exported="false" />
         <activity

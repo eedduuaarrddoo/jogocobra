@@ -12,21 +12,34 @@ import com.example.jogocobra.databinding.NovojogoBinding
 class NovoJogo : AppCompatActivity() {
     lateinit var binding: NovojogoBinding
     lateinit var viewmodel: NovoJogoViewModel
-    var cobra =  Ponto()
+    var cobra = Ponto()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.novojogo)
         viewmodel = ViewModelProvider(this).get(NovoJogoViewModel::class.java)
         binding.viewmodel = viewmodel
         binding.lifecycleOwner = this
+        viewmodel.listPosicaoCobra.value!!.add(Ponto(3, 5))
 
         val inflater = LayoutInflater.from(this)
-
-        viewmodel.listPosicaoCobra.value!!.add(Ponto(3, 5))
         loadTabuleiro(inflater)
 
-        runGame()
+        fun runGame() {
+            Thread {
+                while (viewmodel.inGame) {
+                    Thread.sleep(1000)
+                    runOnUiThread {
 
+                        viewmodel.limpaTabuleiro()
+                        viewmodel.printarFruta(viewmodel.posifrutaY.value!!,viewmodel.posifrutaX.value!!)
+                        viewmodel.comeuFruta(viewmodel.posifrutaY.value!!,viewmodel.posifrutaX.value!!)
+                        viewmodel.printCobra()
+                        viewmodel.moveCobra(viewmodel.direcao.value!!)
+                        viewmodel.fimDJogo()
+                    }
+                }
+            }.start()
+        }
         binding.cima.setOnClickListener {
             viewmodel.mudarMovimento(1)
         }
@@ -39,55 +52,10 @@ class NovoJogo : AppCompatActivity() {
         binding.baixo.setOnClickListener {
             viewmodel.mudarMovimento(2)
         }
+        runGame()
 
     }
 
-    fun runGame() {
-        Thread {
-            while (true) {
-                Thread.sleep(1000)
-                runOnUiThread {
-                    limpaTabuleiro()
-                    printCobra()
-                    moveCobra(viewmodel.direcao.value!!)
-                }
-            }
-        }.start()
-    }
-
-
-    private fun moveCobra(movimento : Int) {
-        for (i in 0 until viewmodel.listPosicaoCobra.value!!.size) {
-            when(movimento){
-                //cima
-                1 -> viewmodel.listPosicaoCobra.value!!.get(i).x = viewmodel.listPosicaoCobra.value!!.get(i).x - 1
-                //baixo
-                2 -> viewmodel.listPosicaoCobra.value!!.get(i).x= viewmodel.listPosicaoCobra.value!!.get(i).x + 1
-                //esquerda
-                3 -> viewmodel.listPosicaoCobra.value!!.get(i).y = viewmodel.listPosicaoCobra.value!!.get(i).y - 1
-                //direita
-                4 -> viewmodel.listPosicaoCobra.value!!.get(i).y = viewmodel.listPosicaoCobra.value!!.get(i).y + 1
-            }
-        }
-    }
-    private fun printCobra() {
-        for (i in 0 until viewmodel.listPosicaoCobra.value!!.size) {
-            viewmodel._tabuleiro.value!![viewmodel.listPosicaoCobra.value!!.get(i).x][viewmodel.listPosicaoCobra.value!!.get(
-                i
-                                ).y]!!.setImageResource(R.drawable.komunis)
-        }
-    }
-
-    private fun limpaTabuleiro() {
-        for (i in 0 until viewmodel.linha.value!!) {
-            for (j in 0 until (viewmodel.coluna.value!!)) {
-                viewmodel._tabuleiro.value!![i][j]!!.setImageResource(R.drawable.quadradobranco)
-            }
-        }
-    }
-fun printarFruta(){
-    viewmodel._tabuleiro.value!![1][1].setImageResource(R.layout.)
-}
     private fun loadTabuleiro(inflater: LayoutInflater) {
         for (i in 0..(viewmodel.linha.value!! - 1)) {
             Log.i("FOR1", "pos: $i")
@@ -102,6 +70,6 @@ fun printarFruta(){
                 binding.gridl.addView(viewmodel._tabuleiro.value!![i][j])
             }
         }
-    } }
-
+    }
+}
 

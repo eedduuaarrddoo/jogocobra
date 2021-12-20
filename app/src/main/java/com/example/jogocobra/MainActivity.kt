@@ -15,10 +15,7 @@ class MainActivity : AppCompatActivity() {
             var i = Intent(this,NovoJogo ::class.java)
             startActivity(i)
         }
-        binding.placar.setOnClickListener {
-            var i = Intent(this,ListaJogador ::class.java)
-            startActivity(i)
-        }
+
         binding.config.setOnClickListener {
             var i = Intent(this,Configs ::class.java)
             startActivity(i)
