@@ -1,5 +1,6 @@
 package com.example.jogocobra
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -12,5 +13,9 @@ class Configs : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= DataBindingUtil.setContentView(this,R.layout.activity_configs)
 
+        binding.voltabut.setOnClickListener {
+            var i = Intent(this,MainActivity ::class.java)
+            startActivity(i)
+        }
     }
 }
