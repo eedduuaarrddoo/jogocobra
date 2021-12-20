@@ -15,10 +15,10 @@ class NovoJogoViewModel: ViewModel() {
      var coluna: LiveData<Int> = _coluna
     private var pontos = MutableLiveData<Int>(0)
      var _pontos: LiveData<Int> = pontos
-     var inGame = true
+    private var _gameStatus = MutableLiveData<Boolean>(false)
+    var gameStatus: LiveData<Boolean> = _gameStatus
      var velocidade = 1
-     private var tabuleiro =
-          MutableLiveData(Array(linha.value!!) { arrayOfNulls<ImageView>(coluna.value!!) })
+     private var tabuleiro = MutableLiveData(Array(linha.value!!) { arrayOfNulls<ImageView>(coluna.value!!) })
      var _tabuleiro: LiveData<Array<Array<ImageView?>>> = tabuleiro
      var listPosicaoCobra = MutableLiveData(mutableListOf<Ponto>())
      var _direcao = MutableLiveData<Int>(1)
@@ -33,33 +33,37 @@ class NovoJogoViewModel: ViewModel() {
      }
 
 
-     fun mudarMovimento(movimento : Int){
-          _direcao.value = movimento
+    fun mudarMovimento(movimento: Int) {
+        _direcao.value = movimento
+    }
 
-     }
+    fun starGame(){
+        _gameStatus.value = true
+        listPosicaoCobra.value!!.add(Ponto((_linha.value!!/2), (_coluna.value!!/2)))
+    }
 
 
-
-fun moveCobra(movimento : Int) {
-          for (i in 0 until listPosicaoCobra.value!!.size) {
-               when(movimento){
+    fun moveCobra(movimento: Int) {
+        if (gameStatus.value!! == true)  {
+            for (i in 0 until listPosicaoCobra.value!!.size) {
+                when (movimento) {
                     //cima
-                    1 -> listPosicaoCobra.value!!.get(i).x = listPosicaoCobra.value!!.get(i).x - 1
+                    1 -> listPosicaoCobra.value!!.get(0).x = listPosicaoCobra.value!!.get(0).x - 1
                     //baixo
-                    2 -> listPosicaoCobra.value!!.get(i).x= listPosicaoCobra.value!!.get(i).x + 1
+                    2 -> listPosicaoCobra.value!!.get(0).x = listPosicaoCobra.value!!.get(0).x + 1
                     //esquerda
-                    3 -> listPosicaoCobra.value!!.get(i).y = listPosicaoCobra.value!!.get(i).y - 1
+                    3 -> listPosicaoCobra.value!!.get(0).y = listPosicaoCobra.value!!.get(0).y - 1
                     //direita
-                    4 -> listPosicaoCobra.value!!.get(i).y = listPosicaoCobra.value!!.get(i).y + 1
-               }
-          }
-     }
+                    4 -> listPosicaoCobra.value!!.get(0).y = listPosicaoCobra.value!!.get(0).y + 1
+                }
+            }
+        }
+
+    }
        fun printCobra() {
-          for (i in 0 until listPosicaoCobra.value!!.size) {
-          _tabuleiro.value!![listPosicaoCobra.value!!.get(i).x][listPosicaoCobra.value!!.get(
-                    i
-               ).y]!!.setImageResource(R.drawable.komunis)
-          }
+           if(gameStatus.value!! == true){
+               tabuleiro.value!![listPosicaoCobra.value!!.get(0).x][listPosicaoCobra.value!!.get(0).y]!!.setImageResource(R.drawable.komunis)
+           }
      }
 
     fun limpaTabuleiro() {
@@ -82,9 +86,13 @@ fun moveCobra(movimento : Int) {
      }
 fun fimDJogo(){
 if(listPosicaoCobra.value!!.get(0).x == -1 && listPosicaoCobra.value!!.get(0).y == -1){
-    inGame=false
+
 }
-}
+}fun gameOver(){
+        if ((listPosicaoCobra.value!!.get(0).x == 10 || listPosicaoCobra.value!!.get(0).y == 10) || (listPosicaoCobra.value!!.get(0).x == -1 || listPosicaoCobra.value!!.get(0).y == -1)) {
+            _gameStatus.value = false
+        }
+    }
 
      }
 

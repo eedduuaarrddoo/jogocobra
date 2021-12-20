@@ -1,5 +1,6 @@
 package com.example.jogocobra
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,32 +14,45 @@ class NovoJogo : AppCompatActivity() {
     lateinit var binding: NovojogoBinding
     lateinit var viewmodel: NovoJogoViewModel
     var cobra = Ponto()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.novojogo)
         viewmodel = ViewModelProvider(this).get(NovoJogoViewModel::class.java)
         binding.viewmodel = viewmodel
         binding.lifecycleOwner = this
-        viewmodel.listPosicaoCobra.value!!.add(Ponto(3, 5))
+
+        var i = Intent(this, FimDjogo::class.java)
+
 
         val inflater = LayoutInflater.from(this)
         loadTabuleiro(inflater)
-
-        fun runGame() {
+        viewmodel.starGame()
+        fun runGame(intent : Intent) {
             Thread {
-                while (viewmodel.inGame) {
-                    Thread.sleep(1000)
+                while (viewmodel.gameStatus.value!! == true) {
+                    Thread.sleep(1000  )
                     runOnUiThread {
-
                         viewmodel.limpaTabuleiro()
-                        viewmodel.printarFruta(viewmodel.posifrutaY.value!!,viewmodel.posifrutaX.value!!)
-                        viewmodel.comeuFruta(viewmodel.posifrutaY.value!!,viewmodel.posifrutaX.value!!)
+
+                        viewmodel.printarFruta(viewmodel.posifrutaY.value!!, viewmodel.posifrutaX.value!!)
+                        viewmodel.comeuFruta(viewmodel.posifrutaY.value!!, viewmodel.posifrutaX.value!!)
+                        viewmodel.gameOver()
                         viewmodel.printCobra()
                         viewmodel.moveCobra(viewmodel.direcao.value!!)
-                        viewmodel.fimDJogo()
+
+
+
                     }
                 }
+                startActivity(intent)
+                var bundle=Bundle()
+                bundle.putString("Pontuacao",viewmodel._pontos.value!!.toString())
+                intent.putExtras(bundle)
+                startActivity(i)
+
             }.start()
+
         }
         binding.cima.setOnClickListener {
             viewmodel.mudarMovimento(1)
@@ -52,7 +66,7 @@ class NovoJogo : AppCompatActivity() {
         binding.baixo.setOnClickListener {
             viewmodel.mudarMovimento(2)
         }
-        runGame()
+        runGame(i)
 
     }
 
